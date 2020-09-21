@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,55 +11,53 @@ namespace XFEFilePickerSample
             InitializeComponent();
         }
 
-        async void Button_Clicked(object sender, EventArgs e)
+        async void Button_Clicked(System.Object sender, System.EventArgs e)
         {
             // For custom file types            
-            //var customFileType =
-            //    new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-            //    {
-            //        { DevicePlatform.iOS, new[] { "com.adobe.pdf" } }, // or general UTType values
-            //        { DevicePlatform.Android, new[] { "application/pdf" } },
-            //        { DevicePlatform.UWP, new[] { ".pdf" } },
-            //        { DevicePlatform.Tizen, new[] { "*/*" } },
-            //        { DevicePlatform.macOS, new[] { "pdf"} }, // or general UTType values
-            //    });
+            // var customFileType =
+            //     new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+            //     {
+            //         { DevicePlatform.iOS, new[] { "com.adobe.pdf" } }, // or general UTType values
+            //         { DevicePlatform.Android, new[] { "application/pdf" } },
+            //         { DevicePlatform.UWP, new[] { ".pdf" } },
+            //         { DevicePlatform.Tizen, new[] { "*/*" } },
+            //         { DevicePlatform.macOS, new[] { "pdf"} }, // or general UTType values
+            //     });
 
-            var result = await FilePicker.PickAsync(new PickOptions
+            var pickResult = await FilePicker.PickAsync(new PickOptions
             {
-                PickerTitle = "Pick a photo",
-                FileTypes = FilePickerFileType.Images
-                // For custom file types
-                //FileTypes = customFileType
+                FileTypes = FilePickerFileType.Images,
+                //FileTypes = customFileType,
+                PickerTitle = "Pick an image"
             });
 
-            // If result == null user cancelled!
-            if (result != null)
+            if (pickResult != null)
             {
-                var stream = await result.OpenReadAsync();
+                var stream = await pickResult.OpenReadAsync();
                 resultImage.Source = ImageSource.FromStream(() => stream);
             }
         }
 
-        async void Button1_Clicked(object sender, EventArgs e)
+        async void Button1_Clicked(System.Object sender, System.EventArgs e)
         {
-            var result = await FilePicker.PickMultipleAsync(new PickOptions
+            var pickResult = await FilePicker.PickMultipleAsync(new PickOptions
             {
-                PickerTitle = "Pick a photo",
-                FileTypes = FilePickerFileType.Images
+                FileTypes = FilePickerFileType.Images,
+                PickerTitle = "Pick image(s)"
             });
 
-            // If result == null user cancelled!
-            if (result != null)
+            if (pickResult != null)
             {
-                var images = new List<ImageSource>();
+                var imageList = new List<ImageSource>();
 
-                foreach (var image in result)
+                foreach(var image in pickResult)
                 {
                     var stream = await image.OpenReadAsync();
-                    images.Add(ImageSource.FromStream(() => stream));
+
+                    imageList.Add(ImageSource.FromStream(() => stream));
                 }
 
-                collectionView.ItemsSource = images;
+                collectionView.ItemsSource = imageList;
             }
         }
     }
