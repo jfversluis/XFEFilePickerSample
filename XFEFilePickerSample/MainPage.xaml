@@ -16,5 +16,18 @@
                 </FormattedString>
             </Label.FormattedText>
         </Label>
+
+        <Button Text="Pick Image" Clicked="Button_Clicked" />
+        <Image x:Name="resultImage" />
+
+        <Button Text="Pick Images" Clicked="Button1_Clicked" />
+
+        <CollectionView x:Name="collectionView" >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding .}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </StackLayout>
 </ContentPage>
